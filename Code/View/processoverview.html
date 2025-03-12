@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f4f8;
+            color: #1f2937;
+            line-height: 1.5;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #1f2937;
+            letter-spacing: -0.025em;
+        }
+        
+        .header p {
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.125rem;
+        }
+    
+        /* Section Styles */
+        .section {
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            position: relative;
+        }
+    
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background-color: #2563eb;
+        }
+    
+        .section-description {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1.125rem;
+            max-width: 800px;
+        }
+    
+        /* Card Styles */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f8fafc;
+            border-radius: 0.75rem 0.75rem 0 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .card-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            background: white;
+            border-radius: 0 0 0.75rem 0.75rem;
+        }
+        
+        .description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+    
+        .icon {
+            font-size: 1.75rem;
+            min-width: 1.75rem;
+            line-height: 1;
+        }
+    
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+            border-top: 1px solid #e5e7eb;
+            color: #64748b;
+            font-size: 1rem;
+            margin-top: 3rem;
+        }
+    
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.875rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const ProcessOverview = () => {
+            const sections = {
+                types: {
+                    title: "Geschäftsprozessmodell",
+                    description: "Ein Geschäftsprozessmodell repräsentiert insbesondere die Reihenfolge von Aktivitätstypen eines Geschäftsprozesstyps.",
+                    items: [
+                        {
+                            title: "Geschäftsprozesstyp",
+                            icon: "🏢",
+                            description: "Allgemeiner Rahmen eines Geschäftsprozesses, der als Beschreibung der Aktivitätstypen sowie der Ordnungsbeziehungen zwischen den Aktivitätstypen gegeben ist."
+                        },
+                        {
+                            title: "Aktivitätstyp",
+                            icon: "⚙️",
+                            description: "Definiert durch Input- und Output-Objekttypen (sowie Regeln), die sie erzeugen, verbrauchen, lesen oder bearbeiten."
+                        },
+                        {
+                            title: "Objekttyp",
+                            icon: "🗃️",
+                            description: "Definiert die Struktur von Objektinstanzen durch Attribute inklusive zulässigen Wertebereich."
+                        },                    
+                        {
+                            title: "Ordnungsbeziehungen",
+                            icon: "🔄",
+                            description: "Zwischen zwei Aktivitätstypen können die folgenden Ordnungsbeziehungen vorliegen: SEQUENZIELL (nacheinander), ALTERNATIV (entweder-oder), NEBENLÄUFIG (unabhängig). Diese ergeben sich durch vorhandene oder nicht-vorhandene kausale Zusammenhänge zwischen den Aktivitäten sowie organisatorische Vorgaben."
+                        },
+                    ]
+                },                
+                instances: {
+                    title: "Instanzen in der Ausführung",
+                    description: "Die konkreten Ausprägungen der Typen während der Prozessausführungen.",
+                    items: [
+                        {
+                            title: "Prozessinstanz",
+                            icon: "📑",
+                            description: "Konkrete Ausführung eines Geschäftsprozesstyps mit zugeordneten Aktivitäts- und Objektinstanzen."
+                        },
+                        {
+                            title: "Aktivitätsinstanz",
+                            icon: "⚡",
+                            description: "Konkrete Ausführung eines Aktivitätstyps, die Objektinstanzen erzeugt, verbraucht oder verändert."
+                        },
+                        {
+                            title: "Objektinstanz",
+                            icon: "📦",
+                            description: "Konkrete Ausprägung eines Objekttyps. Beispiel: Bestellung-123 mit spezifischen Attributwerten."
+                        }
+                    ]
+                },
+                approach: {
+                    title: "Generierung des Prozessmodells",
+                    description: "Von Objektinstanzen zum Geschäftsprozessmodell",
+                    items: [
+                        {
+                            title: "Informationsextraktion",
+                            icon: "🔍",
+                            description: "Analyse der Objektinstanzen zur Identifikation von Objekttypen und Prozessinstanzen. Anschließend die Ableitung von Objektbeziehungstypen durch übereinstimmende Attributwerte und zeitliche Nähe. Definition von Aktivitätstypen."
+                        },
+                        {
+                            title: "Modellgenerierung",
+                            icon: "🔄",
+                            description: "Ableitung der Ordnungsbeziehungen zwischen Aktivitätstypen. Erstellung eines Petri-Netzes zur Repräsentation des Geschäftsprozesses."
+                        },
+                        {
+                            title: "Regelextraktion",
+                            icon: "📋",
+                            description: "Identifikation von Ausführungsbedingungen und Objektmanipulationen an Entscheidungspunkten im Geschäftsprozessmodell."
+                        }
+                    ]
+                }
+            };
+
+            return (
+                <div>
+                    <div className="header">
+                        <h1>Prozessmodellgenerator</h1>
+                        <p>Automatisierte Erstellung von Geschäftsprozessmodellen basierend auf Objektinstanzen</p>
+                    </div>
+                    
+                    {Object.entries(sections).map(([key, section]) => (
+                        <div key={key} className="section">
+                            <h2 className="section-title">{section.title}</h2>
+                            <p className="section-description">{section.description}</p>
+                            <div className="grid">
+                                {section.items.map((item, index) => (
+                                    <div key={index} className="card">
+                                        <div className="card-header">
+                                            <span className="icon">{item.icon}</span>
+                                            <span className="card-title">{item.title}</span>
+                                        </div>
+                                        <div className="card-content">
+                                            <p className="description">{item.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                    
+                    <div className="footer">
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ProcessOverview />);
+    </script>
+</body>
+</html>

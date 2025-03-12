@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+        
+        .cluster-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin: 1rem;
+            border: 1px solid #e5e7eb;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+        
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #f8fafc;
+            border-radius: 0.5rem 0.5rem 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cluster-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .file-list {
+            padding: 1rem;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }
+        
+        .file-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .badge-independent {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-dependent {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+        
+        .edit-input {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+        
+        .edit-button {
+            padding: 0.375rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .edit-button:hover {
+            color: #374151;
+        }
+        
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .button-primary {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+        }
+        
+        .button-primary:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .button-secondary {
+            background-color: white;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+        
+        .button-secondary:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const ClusterManagement = ({ initialData }) => {
+            const [clusters, setClusters] = React.useState({});
+            const [expandedClusters, setExpandedClusters] = React.useState({});
+            const [editingDocTypes, setEditingDocTypes] = React.useState({});
+            const [selectedFiles, setSelectedFiles] = React.useState([]);
+            const [newClusterId, setNewClusterId] = React.useState('');
+            const [pybridge, setPybridge] = React.useState(null);
+
+            React.useEffect(() => {
+                // Initialize WebChannel
+                if (typeof qt !== 'undefined') {
+                    new QWebChannel(qt.webChannelTransport, function(channel) {
+                        console.log("WebChannel initialisiert");
+                        setPybridge(channel.objects.pybridge);
+                    });
+                } else {
+                    console.error("Qt WebChannel nicht verfügbar");
+                }
+            }, []);
+
+            React.useEffect(() => {
+                // Group data by cluster
+                const groupedData = {};
+                if (Array.isArray(initialData)) {
+                    console.log("Gruppiere initiale Daten:", initialData.length, "Elemente");
+                    initialData.forEach(doc => {
+                        if (!groupedData[doc.cluster]) {
+                            groupedData[doc.cluster] = {
+                                docType: doc.doc_type,
+                                isIndependent: doc.process_instance_independent,
+                                files: []
+                            };
+                        }
+                        groupedData[doc.cluster].files.push(doc);
+                    });
+                    setClusters(groupedData);
+                }
+            }, [initialData]);
+
+            const toggleClusterExpansion = (clusterId) => {
+                setExpandedClusters(prev => ({
+                    ...prev,
+                    [clusterId]: !prev[clusterId]
+                }));
+            };
+
+            const toggleDocTypeEdit = (clusterId) => {
+                setEditingDocTypes(prev => ({
+                    ...prev,
+                    [clusterId]: !prev[clusterId]
+                }));
+            };
+
+            const handleFileSelection = (clusterId, fileName, isSelected) => {
+                const fileKey = `${clusterId}:${fileName}`;
+                setSelectedFiles(prev => 
+                    isSelected 
+                        ? [...prev, fileKey]
+                        : prev.filter(f => f !== fileKey)
+                );
+            };
+
+            const handleDocTypeChange = (clusterId, newDocType) => {
+                if (!newDocType.trim() || !pybridge) {
+                    console.warn("Dokumenttyp kann nicht aktualisiert werden: Eingabe oder pybridge fehlt");
+                    return;
+                }
+                
+                try {
+                    console.log(`Aktualisiere Dokumenttyp für Cluster ${clusterId} auf ${newDocType}`);
+                    pybridge.updateDocType(String(clusterId), newDocType);
+                    
+                    setClusters(prev => ({
+                        ...prev,
+                        [clusterId]: {
+                            ...prev[clusterId],
+                            docType: newDocType
+                        }
+                    }));
+                    toggleDocTypeEdit(clusterId);
+                } catch (error) {
+                    console.error("Fehler beim Aktualisieren des Dokumenttyps:", error);
+                }
+            };
+
+            const toggleIndependentStatus = (clusterId) => {
+                if (!pybridge) {
+                    console.warn("Status kann nicht umgeschaltet werden: pybridge nicht verfügbar");
+                    return;
+                }
+                
+                try {
+                    const newStatus = !clusters[clusterId].isIndependent;
+                    console.log(`Schalte Unabhängigkeitsstatus für Cluster ${clusterId} auf ${newStatus}`);
+                    
+                    setClusters(prev => ({
+                        ...prev,
+                        [clusterId]: {
+                            ...prev[clusterId],
+                            isIndependent: newStatus
+                        }
+                    }));
+                    
+                    pybridge.updateIndependentStatus(String(clusterId), newStatus);
+                } catch (error) {
+                    console.error("Fehler beim Umschalten des Unabhängigkeitsstatus:", error);
+                }
+            };
+
+            const handleReassignFiles = () => {
+                if (!pybridge || !newClusterId.trim() || isNaN(newClusterId)) {
+                    alert('Bitte geben Sie eine gültige Cluster-ID ein');
+                    return;
+                }
+                
+                try {
+                    const filesToMove = selectedFiles.map(fileKey => {
+                        const [clusterId, fileName] = fileKey.split(':');
+                        return { clusterId, fileName };
+                    });
+                    
+                    console.log("Weise Dateien neu zu:", filesToMove, "zu Cluster", newClusterId);
+                    pybridge.reassignFiles(filesToMove, parseInt(newClusterId, 10));
+                    setSelectedFiles([]);
+                    setNewClusterId('');
+                } catch (error) {
+                    console.error("Fehler beim Neuzuweisen von Dateien:", error);
+                }
+            };
+
+            return (
+                <div className="p-4">
+                    <div className="actions-bar">
+                        <h1 className="text-xl font-bold">Cluster-Verwaltung</h1>
+                        <div className="flex gap-4">
+                            <input
+                                type="text"
+                                placeholder="Neue Cluster-ID"
+                                value={newClusterId}
+                                onChange={(e) => setNewClusterId(e.target.value)}
+                                className="edit-input"
+                            />
+                            <button
+                                onClick={handleReassignFiles}
+                                disabled={selectedFiles.length === 0}
+                                className="button button-primary"
+                            >
+                                Ausgewählte Dateien neu zuweisen
+                            </button>
+                        </div>
+                    </div>
+
+                    {Object.entries(clusters).map(([clusterId, clusterData]) => (
+                        <div key={clusterId} className="cluster-card">
+                            <div className="card-header">
+                                <div className="cluster-title">
+                                    <button onClick={() => toggleClusterExpansion(clusterId)}>
+                                        {expandedClusters[clusterId] ? '▼' : '▶'}
+                                    </button>
+                                    {editingDocTypes[clusterId] ? (
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="text"
+                                                defaultValue={clusterData.docType}
+                                                className="edit-input"
+                                                onKeyPress={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        handleDocTypeChange(clusterId, e.target.value);
+                                                    }
+                                                }}
+                                                autoFocus
+                                            />
+                                            <button
+                                                onClick={() => toggleDocTypeEdit(clusterId)}
+                                                className="edit-button"
+                                            >
+                                                ✓
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-2">
+                                            <span>Cluster {clusterId}: {clusterData.docType}</span>
+                                            <button
+                                                onClick={() => toggleDocTypeEdit(clusterId)}
+                                                className="edit-button"
+                                            >
+                                                ✎
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div
+                                        className={`badge ${
+                                            clusterData.isIndependent
+                                                ? 'badge-independent'
+                                                : 'badge-dependent'
+                                        }`}
+                                        onClick={() => toggleIndependentStatus(clusterId)}
+                                    >
+                                        {clusterData.isIndependent ? 'Unabhängig' : 'Prozessabhängig'}
+                                    </div>
+                                    <span className="text-sm text-gray-500">
+                                        {clusterData.files.length} Dateien
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            {expandedClusters[clusterId] && (
+                                <div className="file-list">
+                                    {clusterData.files.map((file, index) => (
+                                        <div key={index} className="file-item">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedFiles.includes(`${clusterId}:${file.filename}`)}
+                                                onChange={(e) => handleFileSelection(clusterId, file.filename, e.target.checked)}
+                                                className="mr-2"
+                                            />
+                                            <span>{file.filename}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        // Initial render with empty data
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ClusterManagement initialData={[]} />);
+
+        // Expose update function to window
+        window.updateClusterView = function(data) {
+            try {
+                root.render(<ClusterManagement initialData={data} />);
+            } catch (error) {
+                console.error('Fehler beim Aktualisieren der Cluster-Ansicht:', error);
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+            line-height: 1.5;
+        }
+        
+        .instance-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin: 1rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .instance-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            border-radius: 0.5rem 0.5rem 0 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .instance-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-content {
+            padding: 1rem;
+        }
+        
+        .document-list {
+            display: grid;
+            gap: 1rem;
+            padding: 0.5rem;
+        }
+        
+        .document-item {
+            background-color: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #4b5563;
+            font-weight: 500;
+        }
+        
+        .document-type {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e0e7ff;
+            color: #4338ca;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .timestamp {
+            color: #6b7280;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .stats-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background-color: #f8fafc;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stats-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stats-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .stats-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            border: 2px solid white;
+        }
+
+        .content-preview {
+            margin-top: 0.5rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .preview-toggle {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .preview-toggle:hover {
+            background-color: #e5e7eb;
+        }
+
+        .json-view {
+            font-family: monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.125rem 0.5rem;
+            background-color: #dbeafe;
+            color: #1e40af;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .badge-partial {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-shared {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const DocumentContent = ({ content }) => {
+            const [isExpanded, setIsExpanded] = React.useState(false);
+            
+            if (!content) return null;
+            
+            return (
+                <div className="content-preview">
+                    <button 
+                        className="preview-toggle" 
+                        onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                        {isExpanded ? '▼' : '▶'} Objektinstanz-Inhalt
+                    </button>
+                    {isExpanded && (
+                        <div className="json-view">
+                            {JSON.stringify(content, null, 2)}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const Badge = ({ type, children }) => {
+            const baseClass = "badge";
+            const typeClass = `badge-${type}`;
+            return (
+                <span className={`${baseClass} ${typeClass}`}>
+                    {children}
+                </span>
+            );
+        };
+
+        const NotUsedDocument = ({ doc }) => {
+            const [isExpanded, setIsExpanded] = React.useState(false);
+
+            return (
+                <div className="document-item">
+                    <div className="document-header" onClick={() => setIsExpanded(!isExpanded)}>
+                        <span>{doc.filename}</span>
+                        <span>{isExpanded ? '▼' : '▶'}</span>
+                    </div>
+                    {isExpanded && (
+                        <div className="json-view">
+                            {JSON.stringify(doc, null, 2)}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const ProcessInstanceDisplay = ({ instances = {}, notused = [] }) => {
+            const [expandedInstances, setExpandedInstances] = React.useState({});
+            const [expandedVariants, setExpandedVariants] = React.useState({});
+            
+            const toggleExpandInstance = (instanceId) => {
+                setExpandedInstances(prev => ({
+                    ...prev,
+                    [instanceId]: !prev[instanceId]
+                }));
+            };
+
+            const toggleExpandVariant = (variantId) => {
+                setExpandedVariants(prev => ({
+                    ...prev,
+                    [variantId]: !prev[variantId]
+                }));
+            };
+
+            const formatDate = (dateString) => {
+                if (!dateString) return 'N/A (kein repräsentaiver Zeitpunkt)';
+                const date = new Date(dateString);
+                return date.toLocaleString();
+            };
+
+            const InstanceCard = ({ instanceId, instance }) => {
+                const isExpanded = expandedInstances[instanceId];
+                const documentCount = instance.process_docs.length;
+                const types = [...new Set(instance.process_docs.map(doc => doc['doc_type']))];  // Use dec_type instead of cluster
+                
+                const sortedDocs = [...instance.process_docs].sort((a, b) => {
+                    return new Date(a.final_timestamp) - new Date(b.final_timestamp);
+                });
+                
+                return (
+                    <div className="instance-card">
+                        <div className="card-header" onClick={() => toggleExpandInstance(instanceId)}>
+                            <div className="instance-title">
+                                Prozessinstanz {instanceId}  {/* Display instanceId here */}
+                            </div>
+                            <span>{isExpanded ? '▼' : '▶'}</span>
+                        </div>
+                        
+                        {isExpanded && (
+                            <div className="card-content">
+                                <div className="stats-container">
+                                    <div className="stats-item">
+                                        <div className="stats-label">Dateien</div>
+                                        <div className="stats-value">{documentCount}</div>
+                                    </div>
+                                    <div className="stats-item">
+                                        <div className="stats-label">Objekttypen</div>
+                                        <div className="stats-value">{types.length}</div>
+                                    </div>
+                                    <div className="stats-item">
+                                        <div className="stats-label">Variante</div>
+                                        <div className="stats-value">{instance.variant}</div>
+                                    </div>
+                                </div>
+                                
+                                <div className="timeline">
+                                    {sortedDocs.map((doc, index) => (
+                                        <div key={index} className="timeline-item">
+                                            <div className="document-item">
+                                                <div className="document-header">
+                                                    <span>{doc.filename}</span>
+                                                    <div>
+                                                        {doc.is_partial && (
+                                                            <Badge type="partial">Teilinhalt</Badge>
+                                                        )}
+                                                        {doc.is_shared && (
+                                                            <Badge type="shared">Mehrfach</Badge>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="document-type">
+                                                    Objekttyp: {doc.dec_type}  {/* Display dec_type */}
+                                                </div>
+                                                <div className="timestamp">
+                                                    Zeitpunkt: {formatDate(doc.final_timestamp)}
+                                                </div>
+                                                {doc.partial_content && (
+                                                    <DocumentContent content={doc.partial_content} />
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const VariantTable = ({ variantId, instances }) => {
+                const isExpanded = expandedVariants[variantId];
+                const filesPerCluster = instances[0].files_per_cluster;
+
+                return (
+                    <div className="instance-card">
+                        <div className="card-header" onClick={() => toggleExpandVariant(variantId)}>
+                            <div className="instance-title">
+                                Prozessvariante basierend auf Objekttypen: Variante {variantId}
+                            </div>
+                            <div className="stats-item">
+                                <div className="stats-label">Prozessinstanzen</div>
+                                <div className="stats-value">{instances.length}</div>
+                            </div>
+                            <span>{isExpanded ? '▼' : '▶'}</span>
+                        </div>
+                        
+                        {isExpanded && (
+                            <div className="card-content">
+                                <div className="stats-container">
+                                    {Object.entries(filesPerCluster).map(([type, count]) => (
+                                        <div key={type} className="stats-item">
+                                            <div className="stats-label">{type}</div>
+                                            <div className="stats-value">{count}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {instances.map(instance => (
+                                    <InstanceCard 
+                                        key={instance.inst_id}
+                                        instanceId={instance.inst_id}
+                                        instance={instance}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            const groupedByVariant = Object.values(instances).reduce((acc, instance) => {
+                const variantId = instance.variant;
+                if (!acc[variantId]) {
+                    acc[variantId] = [];
+                }
+                acc[variantId].push(instance);
+                return acc;
+            }, {});
+
+            return (
+                <div style={{ maxWidth: '800px', margin: '0 auto', padding: '1rem' }}>
+                    {Object.entries(groupedByVariant).map(([variantId, instances]) => (
+                        <VariantTable 
+                            key={variantId}
+                            variantId={variantId}
+                            instances={instances}
+                        />
+                    ))}
+                    <div className="instance-card">
+                        <div className="card-header">
+                            <div className="instance-title">
+                                Nicht verwendete Dateien
+                            </div>
+                        </div>
+                        <div className="card-content">
+                            {notused.length > 0 ? (
+                                notused.map((doc, index) => (
+                                    <NotUsedDocument key={index} doc={doc} />
+                                ))
+                            ) : (
+                                <div>Alle Dateien sind Prozessinstanzen zugeordnet.</div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Initial render with empty data
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ProcessInstanceDisplay />);
+
+        // Expose update function to window
+        window.updateProcessInstances = function(instances, notused) {
+            root.render(<ProcessInstanceDisplay instances={instances} notused={notused} />);
+        };
+    </script>
+</body>
+</html>

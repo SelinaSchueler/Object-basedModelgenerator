@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        
+        .settings-container {
+            padding: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .parameter-group {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .group-header {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+        
+        .group-content {
+            padding: 1rem;
+        }
+        
+        .parameter-row {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+        }
+        
+        .parameter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .parameter-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slider-container input {
+            width: 100%;
+        }
+        
+        .switch-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const SettingsView = ({ initialSettings = {} }) => {
+            const [settings, setSettings] = React.useState({
+                same_value_threshold: 80,
+                significant_instance_threshold: 90,
+                same_common_value_threshold: 100,
+                rule_significance_threshold: 90,
+                early_position_bonus: 150,
+                late_position_penalty: 50,
+                reference_weight: 200,
+                reference_position_factor: 200,
+                sequence_weight: 150,
+                attribute_weight: 120,
+                temporal_weight: 400,
+                variant_weight: 50,
+                parallel_object_penalty: 700,
+                each_attribute_by_object: false,
+                database_visualization: false,
+                ...initialSettings
+            });
+
+            const [expandedGroups, setExpandedGroups] = React.useState({});
+
+            const toggleGroup = (groupId) => {
+                setExpandedGroups(prev => ({
+                    ...prev,
+                    [groupId]: !prev[groupId]
+                }));
+            };
+
+            const handleChange = (key, value) => {
+                const newSettings = { ...settings, [key]: value };
+                setSettings(newSettings);
+                window.pyotherside && window.pyotherside.send('settings_changed', newSettings);
+            };
+
+            const parameterGroups = [
+                {
+                    id: 'thresholds',
+                    title: 'Analyse-Gewichtungsfaktoren',
+                    parameters: [
+                        {
+                            key: 'same_value_threshold',
+                            label: 'Wertübereinstimmungsschwelle',
+                            description: 'Minimale Ähnlichkeit für übereinstimmende Werte',
+                            max: 200
+                        },
+                        {
+                            key: 'significant_instance_threshold',
+                            label: 'Instanz-Schwelle',
+                            description: 'Erforderliche Abdeckung der Prozessinstanzen',
+                            max: 100
+                        }
+                    ]
+                },
+                {
+                    id: 'weights',
+                    title: 'Gewichtungseinstellungen',
+                    parameters: [
+                        {
+                            key: 'temporal_weight',
+                            label: 'Zeitliche Gewichtung',
+                            description: 'Einfluss zeitbasierter Beziehungen',
+                            max: 800
+                        },
+                        {
+                            key: 'reference_weight',
+                            label: 'Referenzgewichtung',
+                            description: 'Relevanz von prozessinstantunabhängigen Objekttypen',
+                            max: 500
+                        }
+                    ]
+                }
+            ];
+
+            return (
+                <div className="settings-container">
+                    {parameterGroups.map(group => (
+                        <div key={group.id} className="parameter-group">
+                            <div 
+                                className="group-header"
+                                onClick={() => toggleGroup(group.id)}
+                            >
+                                <span>{group.title}</span>
+                                <span>{expandedGroups[group.id] ? '▼' : '▶'}</span>
+                            </div>
+                            {expandedGroups[group.id] && (
+                                <div className="group-content">
+                                    {group.parameters.map(param => (
+                                        <div key={param.key} className="parameter-row">
+                                            <div className="parameter-label">
+                                                <span>{param.label}</span>
+                                                <span>{settings[param.key]}</span>
+                                            </div>
+                                            <div className="parameter-description">
+                                                {param.description}
+                                            </div>
+                                            <div className="slider-container">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max={param.max}
+                                                    value={settings[param.key]}
+                                                    onChange={(e) => handleChange(param.key, Number(e.target.value))}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                    <div className="switch-container">
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={settings.each_attribute_by_object}
+                                onChange={(e) => handleChange('each_attribute_by_object', e.target.checked)}
+                            />
+                            Jedes Attribut einzeln analysieren
+                        </label>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<SettingsView />);
+
+        window.updateSettings = function(settings) {
+            root.render(<SettingsView initialSettings={settings} />);
+        };
+    </script>
+</body>
+</html>

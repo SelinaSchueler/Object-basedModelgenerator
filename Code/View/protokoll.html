@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Protokoll</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #1f2937;
+            line-height: 1.5;
+            padding: 20px;
+        }
+        .log-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            overflow-y: auto;
+            height: 600px;
+        }
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        .timestamp {
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .message {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="log-container" id="log-container">
+        <!-- Log entries will be appended here -->
+    </div>
+    <script>
+        function addLogEntry(timestamp, message) {
+            const logContainer = document.getElementById('log-container');
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `<span class="timestamp">${timestamp}</span><span class="message">${message}</span>`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight; // Auto-scroll to the bottom
+        }
+
+        // Function to handle log entries from external sources
+        function handleLogEntry(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            addLogEntry(timestamp, message);
+        }
+    </script>
+</body>
+</html>

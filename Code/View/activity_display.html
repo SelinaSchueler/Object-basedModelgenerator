@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        .card-content {
+            padding: 1rem;
+        }
+        
+        .badge {
+            background-color: #f3f4f6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            color: #374151;
+            margin: 0.25rem;
+        }
+        
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+        
+        .rule-item {
+            background-color: #f9fafb;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            margin: 0.25rem 0;
+        }
+
+        .content-based {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .time-based {
+            border-left: 4px solid #10b981;
+        }
+
+        /* New styles for collapsible sections */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .section-header:hover {
+            background-color: #f1f5f9;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+        }
+
+        .section-content {
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        .section-badge {
+            background-color: #e5e7eb;
+            color: #4b5563;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const CollapsibleSection = ({ title, icon, children, itemCount }) => {
+            const [isExpanded, setIsExpanded] = React.useState(true);
+
+            return (
+                <section>
+                    <div 
+                        className="section-header" 
+                        onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <h2 className="section-title">
+                                {icon} {title}
+                            </h2>
+                            {itemCount > 0 && (
+                                <span className="section-badge">
+                                    {itemCount} {itemCount === 1 ? 'Aktivität' : 'Aktivitäten'}
+                                </span>
+                            )}
+                        </div>
+                        <span>{isExpanded ? '▼' : '▶'}</span>
+                    </div>
+                    <div 
+                        className="section-content"
+                        style={{ 
+                            maxHeight: isExpanded ? '5000px' : '0',
+                            marginBottom: isExpanded ? '1rem' : '0',
+                            opacity: isExpanded ? 1 : 0,
+                            transition: 'all 0.3s ease-out'
+                        }}
+                    >
+                        {children}
+                    </div>
+                </section>
+            );
+        };
+
+        const ActivityDisplay = ({ contentBasedActivities = [], timeBasedActivities = [] }) => {
+            const [expandedActivities, setExpandedActivities] = React.useState({});
+
+            const toggleExpand = (activityId) => {
+                setExpandedActivities(prev => ({
+                    ...prev,
+                    [activityId]: !prev[activityId]
+                }));
+            };
+
+            const formatObjectKey = (key) => {
+                if (Array.isArray(key)) {
+                    return `(${key.join(', ')})`;
+                }
+                return key;
+            };
+
+            const ActivityCard = ({ activity, type }) => {
+                const isExpanded = expandedActivities[activity.id];
+                
+                return (
+                    <div className={`card ${type}-based`}>
+                        <div className="card-header" onClick={() => toggleExpand(activity.id)}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <span>{activity.name}</span>
+                            </div>
+                            <span>{isExpanded ? '▼' : '▶'}</span>
+                        </div>
+                        
+                        {isExpanded && (
+                            <div className="card-content">
+                                <div className="flow-container">
+                                    <div>
+                                        {activity.inputTypes.map((input, nr) => (
+                                            <div key={input} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <span className="badge">{formatObjectKey(input[0])}</span>
+                                                <span>({input[1]})</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <span>→</span>
+                                    <div>
+                                        {activity.outputTypes.map((output, nr) => (
+                                            <div key={output} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <span className="badge">{formatObjectKey(output[0])}</span>
+                                                <span>({output[1]})</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {activity.rules && activity.rules.length > 0 && (
+                                    <div>
+                                        <h4 style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Regeln:</h4>
+                                        <div>
+                                            {activity.rules.map((rule, idx) => (
+                                                <div key={idx} className="rule-item">
+                                                    {rule.type}: {rule.keys.join(', ')}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activity.instanceCount > 0 && (
+                                    <div style={{ marginTop: '0.5rem', color: '#6b7280', fontSize: '0.875rem' }}>
+                                        Prozessinstanzen: {activity.instanceCount}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            return (
+                <div style={{ maxWidth: '800px', margin: '0 auto', padding: '1rem' }}>
+                    <CollapsibleSection 
+                        title="Inhaltsbasierte Aktivitätstypen" 
+                        icon="📄"
+                        itemCount={contentBasedActivities.length}
+                    >
+                        {contentBasedActivities.map(activity => (
+                            <ActivityCard 
+                                key={activity.id} 
+                                activity={activity} 
+                                type="content"
+                            />
+                        ))}
+                    </CollapsibleSection>
+
+                    <CollapsibleSection 
+                        title="Zeitbasierte Aktivitätstypen" 
+                        icon="⏱️"
+                        itemCount={timeBasedActivities.length}
+                    >
+                        {timeBasedActivities.map(activity => (
+                            <ActivityCard 
+                                key={activity.id} 
+                                activity={activity} 
+                                type="time"
+                            />
+                        ))}
+                    </CollapsibleSection>
+                </div>
+            );
+        };
+
+        // Initial render with empty data
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ActivityDisplay />);
+
+        // Expose update function to window
+        window.updateActivities = function(contentBased, timeBased) {
+            root.render(<ActivityDisplay 
+                contentBasedActivities={contentBased} 
+                timeBasedActivities={timeBased} 
+            />);
+        };
+    </script>
+</body>
+</html>
