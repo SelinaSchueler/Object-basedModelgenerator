@@ -1,0 +1,48 @@
+{
+    "Kunden": [
+      {
+        "Kundennummer": 21,
+        "Name": "Max Mustermann",
+        "Adresse": {
+          "Straße": "Musterstraße 123",
+          "Ort": "Berlin",
+          "Land": "Deutschland"
+        },
+        "Email": "max@example.com",
+        "Zahlungsart": "Kreditkarte"
+      },
+      {
+        "Kundennummer": 42,
+        "Name": "Anna Schmidt",
+        "Adresse": {
+          "Straße": "Schmidtweg 456",
+          "Ort": "Zürich",
+          "Land": "Schweiz"
+        },
+        "Email": "anna@example.com",
+        "Zahlungsart": "Überweisung"
+      },
+      {
+        "Kundennummer": 18,
+        "Name": "Friedrich Müller",
+        "Adresse": {
+          "Straße": "Müllerplatz 789",
+          "Ort": "München",
+          "Land": "Deutschland"
+        },
+        "Email": "friedrich@example.com",
+        "Zahlungsart": "PayPal"
+      },
+      {
+        "Kundennummer": 33,
+        "Name": "Maria Meier",
+        "Adresse": {
+          "Straße": "Meiergasse 567",
+          "Ort": "Zürich",
+          "Land": "Schweiz"
+        },
+        "Email": "maria@example.com",
+        "Zahlungsart": "Lastschrift"
+      }
+    ]
+  }  

@@ -1,0 +1,15 @@
+{
+  "Lieferscheine": [
+    {
+      "Lieferscheinid": 2003,
+      "Case_id": 3,
+      "Bestellungsnummer": 35,
+      "Datum": "01.02.2025",
+      "Produkte": [
+        {"Produktid": 224, "Menge": 2},
+        {"Produktid": 301, "Menge": 5}
+      ],
+      "Gesamtgewicht": 3.5
+    }
+  ]
+}

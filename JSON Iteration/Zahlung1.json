@@ -1,0 +1,16 @@
+{
+    "Zahlungen": [
+        {
+        "Case_id": 1,
+        "Zahlungsreferenz": "Z2024001",
+        "Rechnungsnummer": "R2024001",
+        "Bestellungsnummer": 23,
+        "Kundennummer": 21,
+        "Betrag": 244.37,
+        "Zahlungsart": "Kreditkarte",
+        "Zahlungsstatus": "Erfolg",
+        "IBAN": "DE89 3704 0044 0532 0130 00",
+        "Datum": "22.03.2024"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+  "Bestellung": [
+    {
+      "Case_id": 3,
+      "Bestellungsnummer": 35,
+      "Kundennummer": 42,
+      "Produkte": [
+        {"Produktid": 224, "Menge": 1},
+        {"Produktid": 301, "Menge": 3}
+      ],
+      "Lieferart": 1,
+      "Gesamtpreis": 21.98,
+      "Datum": "15.01.2025"
+    }
+  ]
+}

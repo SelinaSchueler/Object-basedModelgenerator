@@ -1,0 +1,55 @@
+{
+    "Produkte": [
+      {
+        "Produktid": 101,
+        "Name": "Schraube 101mm",
+        "Preis": 20.0,
+        "Lagermenge": 203,
+        "Einzelgewicht": 0.5
+      },
+      {
+        "Produktid": 291,
+        "Name": "Schraube 291mm",
+        "Preis": 15.5,
+        "Lagermenge": 150,
+        "Einzelgewicht": 0.8
+      },
+      {
+        "Produktid": 224,
+        "Name": "Schraube 224mm",
+        "Preis": 10.99,
+        "Lagermenge": 120,
+        "Einzelgewicht": 0.4
+      },
+      {
+        "Produktid": 102,
+        "Name": "Schraube 102mm",
+        "Preis": 8.75,
+        "Lagermenge": 90,
+        "Einzelgewicht": 0.6
+      },
+      {
+        "Produktid": 305,
+        "Name": "Schraube 305mm",
+        "Preis": 25.0,
+        "Lagermenge": 180,
+        "Einzelgewicht": 1.2
+      },
+      {
+        "Produktid": 201,
+        "Name": "Schraube 201mm",
+        "Preis": 12.3,
+        "Lagermenge": 200,
+        "Einzelgewicht": 0.7
+      },
+      {
+        "Produktid": 303,
+        "Name": "Schraube 303mm",
+        "Preis": 18.9,
+        "Lagermenge": 100,
+        "Einzelgewicht": 0.9
+      }
+    ]
+}
+  
+  

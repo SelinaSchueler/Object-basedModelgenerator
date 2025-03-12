@@ -1,0 +1,12 @@
+{
+  "Bestätigung": [
+    {
+      "Case_id": 6,
+      "Bestellungsnummer": 34,
+      "Kundennummer": 33,
+      "Bestätigung": false,
+      "Voraussichtliches Lieferdatum": null,
+      "Datum": "20.12.2023"
+    }
+  ]
+}
