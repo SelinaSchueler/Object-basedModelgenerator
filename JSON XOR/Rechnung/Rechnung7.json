@@ -1,0 +1,14 @@
+{
+  "Rechnung": [
+    {
+      "Case_id": 7,
+      "Bestellungsnummer": 56,
+      "BestätigungID": 1007,
+      "Gesamtbetrag": 25.0,
+      "Rabatt": 0,
+      "Abholgebühr": 5.0,
+      "Fälligkeitsdatum": "22.03.2024",
+      "Datum": "09.03.2024"
+    }
+  ]
+}

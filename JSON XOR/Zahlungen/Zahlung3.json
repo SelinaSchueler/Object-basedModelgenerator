@@ -1,0 +1,15 @@
+{
+    "Zahlungen": [
+        {
+        "Case_id": 3,
+        "Zahlungsreferenz": "Z2024003",
+        "Rechnungsnummer": "R2024003",
+        "Bestellungsnummer": 35,
+        "Kundennummer": 42,
+        "Betrag": 21.98,
+        "Zahlungsart": "Überweisung",
+        "Zahlungsstatus": "Erfolg",
+        "Datum": "25.02.2024"
+        }
+    ]
+}

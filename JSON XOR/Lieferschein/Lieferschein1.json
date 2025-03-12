@@ -1,0 +1,17 @@
+{
+  "Lieferscheine": [
+    {
+      "Lieferscheinid": 2001,
+      "Case_id": 1,
+      "Bestellungsnummer": 23,
+      "Datum": "22.11.2023",
+      "Produkte": [
+        {"Produktid": 101, "Menge": 3},
+        {"Produktid": 291, "Menge": 4},
+        {"Produktid": 224, "Menge": 3}
+      ],
+      "Gesamtgewicht": 4.7,
+      "Lieferkosten:": 0.0
+    }
+  ]
+}

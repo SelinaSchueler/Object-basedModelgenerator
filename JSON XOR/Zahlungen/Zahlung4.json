@@ -1,0 +1,15 @@
+{
+    "Zahlungen": [
+        {
+        "Case_id": 4,
+        "Zahlungsreferenz": "Z2024004",
+        "Rechnungsnummer": "R2024004",
+        "Bestellungsnummer": 42,
+        "Kundennummer": 18,
+        "Betrag": 76.25,
+        "Zahlungsart": "PayPal",
+        "Zahlungsstatus": "Erfolg",
+        "Datum": "17.04.2024"
+        }
+    ]
+}

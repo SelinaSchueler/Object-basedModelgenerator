@@ -1,0 +1,74 @@
+{
+  "Produkte": [
+    {
+      "Produktid": 101,
+      "Name": "Schraube 101mm",
+      "Preis": 20.0,
+      "Lagermenge": 203,
+      "Maximalbestellmenge": 100,
+      "Einzelgewicht": 0.5,
+      "Material": "Edelstahl",
+      "Kategorie": "Standardschrauben"
+    },
+    {
+      "Produktid": 291,
+      "Name": "Schraube 291mm",
+      "Preis": 15.5,
+      "Lagermenge": 150,
+      "Maximalbestellmenge": 200,
+      "Einzelgewicht": 0.8,
+      "Material": "Edelstahl",
+      "Kategorie": "Standardschrauben"
+    },
+    {
+      "Produktid": 224,
+      "Name": "Schraube 224mm",
+      "Preis": 10.99,
+      "Lagermenge": 120,
+      "Maximalbestellmenge": 300,
+      "Einzelgewicht": 0.4,
+      "Material": "Verzinkter Stahl",
+      "Kategorie": "Spezialschrauben"
+    },
+    {
+      "Produktid": 102,
+      "Name": "Schraube 102mm",
+      "Preis": 8.75,
+      "Lagermenge": 90,
+      "Maximalbestellmenge": 50,
+      "Einzelgewicht": 0.6,
+      "Material": "Verzinkter Stahl", 
+      "Kategorie": "Standardschrauben"
+    },
+    {
+      "Produktid": 305,
+      "Name": "Schraube 305mm",
+      "Preis": 25.0,
+      "Lagermenge": 180,
+      "Maximalbestellmenge": 75,
+      "Einzelgewicht": 1.2,
+      "Material": "Titan",
+      "Kategorie": "Premiumschrauben"
+    },
+    {
+      "Produktid": 201,
+      "Name": "Schraube 201mm",
+      "Preis": 12.3,
+      "Lagermenge": 200,
+      "Maximalbestellmenge": 150,
+      "Einzelgewicht": 0.7,
+      "Material": "Verzinkter Stahl",
+      "Kategorie": "Standardschrauben"
+    },
+    {
+      "Produktid": 303,
+      "Name": "Schraube 303mm",
+      "Preis": 18.9,
+      "Lagermenge": 100,
+      "Maximalbestellmenge": 100,
+      "Einzelgewicht": 0.9,
+      "Material": "Titan",
+      "Kategorie": "Premiumschrauben" 
+    }
+  ]
+}

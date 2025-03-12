@@ -1,0 +1,16 @@
+{
+  "Rechnung": [
+    {
+      "Case_id": 1,
+      "Bestellungsnummer": 23,
+      "BestätigungID": 1001,
+      "Gesamtbetrag": 244.37,
+      "Rabatt": 0.02,
+      "Lieferkosten": 15.0,
+      "Fälligkeitsdatum": "30.11.2023",
+      "Datum":"30.11.2023"
+    }
+  ]
+}
+
+

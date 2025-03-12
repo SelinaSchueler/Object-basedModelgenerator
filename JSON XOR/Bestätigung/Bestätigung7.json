@@ -1,0 +1,17 @@
+{
+  "Bestätigung": [
+    {
+      "Case_id": 7,
+      "Bestellungsnummer": 56,
+      "Kundennummer": 21,
+      "Bestätigung": true,
+      "Produkte": [
+        {"Produktid": 305, "Menge": 1}
+      ],
+      "Voraussichtliches Abholdatum": "08.03.2024",
+      "Gesamtpreis": 25.0,
+      "Lieferart": "Abholung",
+      "Datum": "06.03.2024"
+    }
+  ]
+}

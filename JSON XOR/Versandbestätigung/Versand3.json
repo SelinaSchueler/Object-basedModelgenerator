@@ -1,0 +1,11 @@
+{
+  "Versandbestätigung": [
+    {
+      "Lieferscheinid": 2003,
+      "Case_id": 3,
+      "Gesamtgewicht": 3.5,
+      "Versanddatum": "27.02.2024",
+      "Versandt" : true
+    }
+  ]
+}

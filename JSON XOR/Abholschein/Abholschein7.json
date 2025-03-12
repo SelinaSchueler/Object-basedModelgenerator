@@ -1,0 +1,17 @@
+{
+    "Abholschein": [
+      {
+        "Abholscheinid": 3002,
+        "Case_id": 7,
+        "Bestellungsnummer": 56,
+        "Datum": "11.10.2024",
+        "Produkte": [
+          {
+            "Produktid": 305, "Menge": 1,
+            "Name": "Schraube 305mm"
+          }
+        ],
+        "Abholbereit": true
+      }
+    ]
+  }

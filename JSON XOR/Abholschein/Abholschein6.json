@@ -1,0 +1,21 @@
+{
+    "Abholschein": [
+      {
+        "Abholscheinid": 3001,
+        "Case_id": 6,
+        "Bestellungsnummer": 55,
+        "Datum": "23.10.2024",
+        "Produkte": [
+          {
+            "Produktid": 101, "Menge": 5,
+            "Name": "Schraube 101mm"
+          },
+          {
+            "Produktid": 224, "Menge": 2,
+            "Name": "Schraube 224mm"
+          }
+        ],
+        "Abholbereit": true
+      }
+    ]
+  }

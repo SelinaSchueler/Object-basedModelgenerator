@@ -1,0 +1,12 @@
+{
+  "Ablehnung": [
+    {
+      "Case_id": 11,
+      "Bestellungsnummer": 59,
+      "Kundennummer": 18,
+      "Bestätigung": false,
+      "Voraussichtliches Lieferdatum": null,
+      "Datum": "06.03.2024"
+    }
+  ]
+}

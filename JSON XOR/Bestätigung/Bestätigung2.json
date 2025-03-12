@@ -1,0 +1,17 @@
+{
+  "Bestätigung": [
+    {
+      "Case_id": 2,
+      "Bestellungsnummer": 15,
+      "Kundennummer": 21,
+      "Bestätigung": true,
+      "Produkte": [
+        {"Produktid": 101, "Menge": 1}
+      ],
+      "Voraussichtliches Lieferdatum": "10.10.2023",
+      "Gesamtpreis": 20.0,
+      "Lieferart": 2,
+      "Datum": "17.10.2023"
+    }
+  ]
+}
