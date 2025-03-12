@@ -7,9 +7,9 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 # Link to localai client
-OPENAI_API_BASE="http://mlpc.coder.aifb.kit.edu:8080/v1"
+OPENAI_API_BASE="..."
 # openai api key (also needed for localai , but sk- is enough)
-OPENAI_API_KEY="sk-proj-xRxOGXXEquQvhfebWZOzT3BlbkFJkJN66pwKhm7PoPi9mTgG"
+OPENAI_API_KEY="..."
 os.environ['OPENAI_API_BASE'] = OPENAI_API_BASE
 os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 #os.environ["OPENAI_API_KEY"] = getpass.getpass()
