@@ -1,0 +1,15 @@
+{
+    "Zahlungen": [
+        {
+        "Case_id": 2,
+        "Zahlungsreferenz": "Z2024001",
+        "Rechnungsnummer": "R2024001",
+        "Bestellungsnummer": 15,
+        "Kundennummer": 21,
+        "Betrag": 20.0,
+        "Zahlungsart": "Kreditkarte",
+        "Zahlungsstatus": "Erfolg",
+        "Datum": "05.11.2023"
+        }
+    ]
+}
